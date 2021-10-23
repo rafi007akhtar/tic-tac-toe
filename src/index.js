@@ -3,20 +3,13 @@ import ReactDOM from 'react-dom';
 import './index.css';
 
 class Square extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            value: null
-        };
-    }
-
     render() {
         return (
             <button
                 className="square"
-                onClick={() => { this.setState({ value: 'X' }); }}
+                onClick={() => this.props.onClick()}
             >
-                { this.state.value }
+                { this.props.value }
             </button>
         );
     }
@@ -30,8 +23,19 @@ class Board extends React.Component {
         };
     }
 
+    handleClick(i) {
+        // const squares = this.state.squares.slice();  // NOTE: this creates a shallow copy of the original array
+        const squares = [...this.state.squares];  // NOTE: this also creates a shallow copy, and is my preferred way of doing so
+        squares[i] = 'X';
+        // console.log('original array:', this.state.squares, '\nnew array:', squares); //  uncomment to see change in state in the console
+        this.setState({squares: squares});
+    }
+
     renderSquare(i) {
-        return <Square value={this.state.squares[i]} />;
+        return (<Square
+            value={this.state.squares[i]}
+            onClick={() => this.handleClick(i)}
+        />)
     }
 
     render() {
