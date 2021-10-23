@@ -2,6 +2,12 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Typical Output
+
+This is what a typical output of the game would look like.
+
+![tic-tac-toe win screenshot](public/tic-tac-toe-win.png)
+
 ## Available Scripts
 
 In the project directory, you can run:
