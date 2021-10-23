@@ -17,16 +17,20 @@ class Board extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            squares: Array(9).fill(null)
+            squares: Array(9).fill(null),
+            xIsNext: true
         };
     }
 
     handleClick(i) {
         // const squares = this.state.squares.slice();  // NOTE: this creates a shallow copy of the original array
         const squares = [...this.state.squares];  // NOTE: this also creates a shallow copy, and is my preferred way of doing so
-        squares[i] = 'X';
+        squares[i] = this.state.xIsNext ? 'X' : 'O';
         // console.log('original array:', this.state.squares, '\nnew array:', squares); //  uncomment to see change in state in the console
-        this.setState({squares: squares});
+        this.setState({
+            squares: squares,
+            xIsNext: !this.state.xIsNext
+        });
     }
 
     renderSquare(i) {
@@ -37,7 +41,7 @@ class Board extends React.Component {
     }
 
     render() {
-        const status = 'Next player: X';
+        const status = `Next player: ${this.state.xIsNext ? 'X' : 'O'}`;
 
         return (
             <div>
