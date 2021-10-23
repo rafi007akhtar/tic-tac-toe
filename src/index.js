@@ -49,12 +49,13 @@ class Game extends React.Component {
         super(props);
         this.state = {
             history: [{squares: Array(9).fill(null)}],
-            xIsNext: true
+            xIsNext: true,
+            stepNumber: 0
         }
     }
 
     handleClick(i) {
-        const history = this.state.history;
+        const history = this.state.history.slice(0, this.state.stepNumber + 1);
         const current = history[history.length - 1];
         // const squares = current.squares.slice();  // NOTE: this creates a shallow copy of the original array
         const squares = [...current.squares];  // NOTE: this also creates a shallow copy, and is my preferred way of doing so
@@ -68,24 +69,24 @@ class Game extends React.Component {
 
         squares[i] = this.state.xIsNext ? 'X' : 'O';
         this.setState({
-            // squares: squares,
-            history: this.state.history.concat([{
+            history: history.concat([{
                 squares: squares
             }]),
+            stepNumber: history.length,
             xIsNext: !this.state.xIsNext
         });
     }
 
     jumpTo(move) {
         this.setState({
-            history: this.state.history.slice(0, move+1),
-            // xIsNext: !this.state.xIsNext
+            stepNumber: move,
+            xIsNext: (move % 2) === 0
         });
     }
 
     render() {
         const history = this.state.history;
-        const current = history[history.length - 1];
+        const current = history[this.state.stepNumber]
         const winner = calculateWinner(current.squares);
 
         const moves = history.map((step, move) => {
@@ -95,7 +96,7 @@ class Game extends React.Component {
             ;
 
             return (
-                <li>
+                <li key={move}>
                     <button onClick={() => this.jumpTo(move)}>{desc}</button>
                 </li>
             );
